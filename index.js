@@ -35,29 +35,15 @@ function main(){
       }))
     )
   ).then( // deploy contract
-    prepared => new Promise((resolve, reject) => {
-      var isFirstCallback = true;
-      web3.eth.contract(prepared.abi).new(prepared.deploymentOptions, (error, contractInstance) => {
-        if(error) reject(error);
-        else if(isFirstCallback) isFirstCallback = false;
-        else resolve(contractInstance);
-      });
-    })
-  ).then(
-    contractInstance => new Promise((resolve, reject) =>
-      web3.eth.getAccounts((error, accounts) => {
-        if(error) reject(error);
-        else{
-          web3.eth.defaultAccount = accounts[0];
-          contractInstance.double(2, () => null); // stub callback for making asynchronous call to double that ignores results
-          contractInstance.double(3, () => null);
-          contractInstance.double(5, () => null);
-          contractInstance.Result({}, {fromBlock: 0, toBlock: 'latest'}).get((error, logs) => console.log(logs));
-        }
-      })
+    prepared => new Promise((resolve, reject) =>
+      web3.eth.contract(prepared.abi).new(prepared.deploymentOptions, (error, contractInstance) =>
+        error ? reject(error) : resolve(contractInstance)
+      )
     )
-  //  console.log('contract: ', (test = contractInstance).transactionHash)
+  ).then(
+    contractInstance => test = contractInstance
   );
+  setupDefaultAccount();
 }
 
 main();
