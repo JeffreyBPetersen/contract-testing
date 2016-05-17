@@ -52,11 +52,10 @@ function main(){
           contractInstance.double(2, () => null); // stub callback for making asynchronous call to double that ignores results
           contractInstance.double(3, () => null);
           contractInstance.double(5, () => null);
-          contractInstance.Result({}, {fromBlock: 0, toBlock: 'latest'}).get((error, logs) => console.log(logs));
+          contractInstance.Result({}, {fromBlock: 0, toBlock: 'latest'}, (error, log) => console.log(log.args));
         }
       })
     )
-  //  console.log('contract: ', (test = contractInstance).transactionHash)
   );
 }
 
